@@ -8,14 +8,14 @@ import { logout } from '../store/userSlice'
 import toast from 'react-hot-toast'
 import AxiosToastError from '../utils/AxiosToastError'
 
-const UserMenu = ({close}) => {
+const UserMenu = ({}) => {
   const user = useSelector((state)=>state.user)
   const dispatch = useDispatch()
   const handleLogout =async()=>{
     try {
-      console.log(localStorage.getItem("token"));
-      const token = localStorage.getItem("accesstoken");
-      console.log("Token in LocalStorage:", token);
+      // console.log(localStorage.getItem("token"));
+      // const token = localStorage.getItem("accessToken");
+      // console.log("Token in LocalStorage:", token);
       const response = await Axios({
         ...SummaryApi.logout
       })
