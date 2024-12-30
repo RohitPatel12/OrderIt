@@ -151,6 +151,11 @@ export async function loginController(request, response){
         const accessToken = await generatedAccessToken(user._id)
         const refreshToken = await generatedRefreshToken(user._id)
 
+        const updateUser = await UserModel.findByIdAndUpdate(user._id,{
+            last_login_date : new Date()
+        })
+    
+
         const cookiesOption = {
             httpOnly : true,
             secure : true,
@@ -373,6 +378,10 @@ export async function verifyForgotPasswordOtp(request, response){
             })
         }
 
+        const updateUser = UserModel.findByIdAndUpdate(user?._id,{
+            forgot_password_otp : "",
+            forgot_password_expiry : ""
+        })
         //If OTP not expired and OTP === user.forgotPasswordOTP
         return response.json({
             message : "OTP verification successful",
@@ -446,7 +455,7 @@ export async function resetPassword(request, response){
 export async function refreshToken(request, response){
     try {
 
-        const refreshToken = request.cookies.refreshToken || request?.header?.authoriation?.split(" ")[1]
+        const refreshToken = request.cookies.refreshToken || request?.headers?.authoriation?.split(" ")[1]
 
         if (!refreshToken){
             return response.status(400).json({
@@ -492,6 +501,28 @@ export async function refreshToken(request, response){
             message : error.message || error,
             error: true,
             success: false
+        })
+    }
+}
+export async function userDetails(request,response){
+    try {
+        const userId  = request.userId
+
+        console.log(userId)
+
+        const user = await UserModel.findById(userId).select('-password -refresh_token')
+
+        return response.json({
+            message : 'user details',
+            data : user,
+            error : false,
+            success : true
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message : "Something is wrong",
+            error : true,
+            success : false
         })
     }
 }

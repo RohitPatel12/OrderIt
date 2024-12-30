@@ -2,8 +2,8 @@ import jwt from "jsonwebtoken"
 
 const auth = async(request, response, next)=>{
     try {
-        const token = request.cookies.accessToken || request?.header?.authoriation?.split(" ")[1] //Bearer token
-        // console.log("token",token)
+        const token = request.cookies.accessToken || request?.headers?.authorization?.split(" ")[1] //Bearer token
+        console.log("token",token)
         if(!token){
             return response.status(401).json({
                 message:"Provide token"

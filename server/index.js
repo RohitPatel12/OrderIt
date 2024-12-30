@@ -10,7 +10,7 @@ import userRouter from './route/user.route.js'
 
 const app = express()
 app.use(cors({
-    credential : true,
+    credentials : true,
     origin : process.env.FRONTEND_URL
 }))
 
